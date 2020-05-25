@@ -26,8 +26,32 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
-async function RandomProjects() {
-  const response = await fetch('/data');
-  const quote = await response.text();
-  document.getElementById('randomproject').innerText = quote;
+ function RandomProjects() {
+  fetch('/data').then(response => response.json()).then((stats) => {
+    // stats is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    const statsListElement = document.getElementById('randomproject');
+    statsListElement.innerHTML = '';
+    statsListElement.appendChild(
+        createListElement( stats[0]));
+    statsListElement.appendChild(
+        createListElement( stats[1]));
+     statsListElement.appendChild(
+        createListElement( stats[2]));
+     statsListElement.appendChild(
+        createListElement( stats[3]));
+     statsListElement.appendChild(
+        createListElement( stats[4]));
+    statsListElement.appendChild(
+        createListElement( stats[5]));
+    
+  });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
