@@ -32,20 +32,15 @@ function addRandomGreeting() {
     // reference its fields to create HTML content
 
     const statsListElement = document.getElementById('randomproject');
+    const l=stats.length;
     statsListElement.innerHTML = '';
-    statsListElement.appendChild(
-        createListElement( stats[0]));
-    statsListElement.appendChild(
-        createListElement( stats[1]));
-     statsListElement.appendChild(
-        createListElement( stats[2]));
-     statsListElement.appendChild(
-        createListElement( stats[3]));
-     statsListElement.appendChild(
-        createListElement( stats[4]));
-    statsListElement.appendChild(
-        createListElement( stats[5]));
-    
+   
+   var i;
+    for( i=0;i<l;i++){
+statsListElement.appendChild(
+        createListElement( stats[i]));
+    }
+
   });
 }
 
