@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -49,19 +52,29 @@ private int  i=0;
 //         +" terms and condition before accepting . This application ensures that the user is aware of the terms and condition before selecting the I agree checkbox.\n");
     
 //   }
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("application/json;");
-    Gson gson = new Gson();
-    String json = gson.toJson(quotes);
-    response.getWriter().println(json);
+//   @Override
+//   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//     response.setContentType("application/json;");
+//     Gson gson = new Gson();
+//     String json = gson.toJson(quotes);
+//     response.getWriter().println(json);
   
-  }
+//   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
  String comment=request.getParameter("commentBox");
+ long timestamp = System.currentTimeMillis();
  quotes.add(comment);
+ Entity taskEntity = new Entity("Task");
+    taskEntity.setProperty("title", comment);
+    taskEntity.setProperty("timestamp", timestamp);
+
+   
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
+
   response.sendRedirect("/index.html");
 
   }

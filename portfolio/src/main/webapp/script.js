@@ -27,7 +27,7 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
  function RandomProjects() {
-  fetch('/data').then(response => response.json()).then((stats) => {
+  fetch('/list-tasks').then(response => response.json()).then((stats) => {
     // stats is an object, not a string, so we have to
     // reference its fields to create HTML content
 
@@ -38,10 +38,48 @@ function addRandomGreeting() {
    var i;
     for( i=0;i<l;i++){
 statsListElement.appendChild(
-        createListElement( stats[i]));
+        createListElement( stats[i].title));
+    }
+
+  }).then(()=>LOGIN());
+}
+ function RandoProjects() {
+  fetch('/list-tasks').then(response => response.json()).then((stats) => {
+    // stats is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    const statsListElement = document.getElementById('randomproject');
+    const l=stats.length;
+    statsListElement.innerHTML = '';
+   
+   var i;
+    for( i=0;i<l;i++){
+statsListElement.appendChild(
+        createListElement( stats[i].title));
     }
 
   });
+}
+
+function createLink(URL, type){
+  const elem = document.getElementById("randomproject");
+  const linkk= document.createElement('a');
+  linkk.href =URL;
+  linkk.innerText = type;
+  elem.appendChild(linkk);
+}
+function check(){
+    fetch('/login').then(response => response.json()).then((stats) => {if(stats.log==true)
+{
+          createLink(stats.url, "Logout");
+createform();
+createNoform();
+createButton();
+}
+else{
+    createLink(stats.url,"Login");
+}
+});
 }
 
 /** Creates an <li> element containing text. */
@@ -49,4 +87,95 @@ function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text;
   return liElement;
+}
+
+function deleteTask() {
+  const params = new URLSearchParams();
+  //params.append('id', task.id);
+    fetch('/delete-task', {method: 'POST', body: params}).then(() =>{location.reload(true).RandomProjects()});
+    //RandoProjects());
+    
+}
+function LOGIN() {
+  const params = new URLSearchParams();
+  //params.append('id', task.id);
+    fetch('/login', {method: 'POST', body: params}).then(() =>check());
+}
+function createform(){
+      const elem = document.getElementById("for");
+    const Formm = document.createElement('form');
+  Formm.action = "/data";
+  Formm.method ="POST";
+  const label2 = document.createElement('label');
+  label2.for = "Comments";
+  label2.innerHTML ="<h4>Add Comments:</h4>";
+  
+  Formm.appendChild(label2);
+  const label3 = document.createElement('label');
+  label3.innerHTML="<br/>"
+  Formm.appendChild(label3);
+
+  const inputComment = document.createElement('input');
+  inputComment.type = "text";
+  inputComment.id = "commentBox";
+  inputComment.name = "commentBox";
+  Formm.appendChild(inputComment);
+
+  const commentSubmit = document.createElement('input');
+  commentSubmit.type = "submit";
+  commentSubmit.id = "comment-submit";
+    Formm.appendChild(commentSubmit);
+    elem.appendChild(Formm);}
+
+function createNoform(){
+      const elem = document.getElementById("for");
+    const Formm = document.createElement('form');
+  Formm.action = "/list-tasks";
+  Formm.method ="POST"
+
+  const label2 = document.createElement('label');
+  label2.for = "numberOfComments";
+  label2.innerHTML ="<h4>Number of comments to be displayed:</h4>";
+  
+  Formm.appendChild(label2);
+  const label3 = document.createElement('label');
+  label3.innerHTML="<br/>"
+  Formm.appendChild(label3);
+
+  const inputComment = document.createElement('input');
+  inputComment.type = "number";
+  inputComment.id = "no";
+  inputComment.name = "no";
+  Formm.appendChild(inputComment);
+  //document.write("<br>");
+
+  const commentSubmit = document.createElement('input');
+  commentSubmit.type = "submit";
+  commentSubmit.id = "comment-submit";
+    Formm.appendChild(commentSubmit);
+     
+    elem.appendChild(Formm);}
+    
+    function loadBody(){
+        RandomProject();
+        LOGIN();
+    }
+
+function createCommentSection(){
+     const elem = document.getElementById("for");
+    const comm= document.createElement(div);
+    comm;
+}
+function createButton(){
+const elem = document.getElementById("for");
+const labell = document.createElement('label');
+  labell.innerHTML="<br/>"
+  elem.appendChild(labell);
+    const buttonn = document.createElement('button');
+    buttonn.id="delete";
+    buttonn.name="delete";
+    buttonn.textContent="DELETE";
+   // buttonn.onclick="deleteTask()";
+    buttonn.addEventListener("click",deleteTask);
+    elem.appendChild(buttonn);
 }
