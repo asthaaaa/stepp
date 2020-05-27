@@ -28,25 +28,53 @@ function addRandomGreeting() {
 }
  function RandomProjects() {
   fetch('/list-tasks').then(response => response.json()).then((stats) => {
-    // stats is an object, not a string, so we have to
-    // reference its fields to create HTML content
-
-    const statsListElement = document.getElementById('randomproject');
+    
+ const statsListElement = document.getElementById('randomproject');
     const l=stats.length;
     statsListElement.innerHTML = '';
    
-   var i;
+     
+var i;
     for( i=0;i<l;i++){
 statsListElement.appendChild(
         createListElement( stats[i].title));
     }
 
-  }).then(()=>LOGIN());
+    
+
+  }).then(()=>LOGIN()).then(()=>showImage()).then(()=>fetchBlobstoreUrlAndShowForm());
+}
+function showImage()
+{
+     fetch('/show').then(response => response.json()).then((stats) => {
+    // stats is an object, not a string, so we have to
+    // reference its fields to create HTML content
+
+    const statsListElement = document.getElementById('images');
+    const l=stats.length;
+    statsListElement.innerHTML = '';
+   
+const label3 = document.createElement('label');
+   var i;
+    for( i=0;i<l;i++){
+
+  var x = document.createElement("IMG");
+  x.setAttribute("src", stats[i].title);
+  x.setAttribute("width", "304");
+  x.setAttribute("height", "228");
+  x.setAttribute("alt", "The Pulpit Rock");
+  statsListElement.appendChild(x);
+  const label3 = document.createElement('label');
+  label3.innerHTML="<br/>";
+  statsListElement.appendChild(label3);
+    }
+   
+
+  });
 }
  function RandoProjects() {
   fetch('/list-tasks').then(response => response.json()).then((stats) => {
-    // stats is an object, not a string, so we have to
-    // reference its fields to create HTML content
+    
 
     const statsListElement = document.getElementById('randomproject');
     const l=stats.length;
@@ -59,6 +87,17 @@ statsListElement.appendChild(
     }
 
   });
+}
+function fetchBlobstoreUrlAndShowForm() {
+  fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        const messageForm = document.getElementById('my-form');
+        messageForm.action = imageUploadUrl;
+        messageForm.classList.remove('hidden');
+      });//.then(()=>RandomProjects());
 }
 
 function createLink(URL, type){
