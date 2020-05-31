@@ -29,22 +29,17 @@ public final class TimeRange {
   /**
    * A comparator for sorting ranges by their start time in ascending order.
    */
-  public static final Comparator<TimeRange> ORDER_BY_START = new Comparator<TimeRange>() {
-    @Override
-    public int compare(TimeRange a, TimeRange b) {
-      return Long.compare(a.start, b.start);
-    }
-  };
+ 
 
   /**
    * A comparator for sorting ranges by their end time in ascending order.
    */
-  public static final Comparator<TimeRange> ORDER_BY_END = new Comparator<TimeRange>() {
-    @Override
-    public int compare(TimeRange a, TimeRange b) {
-      return Long.compare(a.end(), b.end());
-    }
-  };
+//   public class ORDER_BY_END ()= new Comparator<TimeRange>() {
+//     @Override
+//     public int compare(TimeRange a, TimeRange b) {
+//       return Long.compare(a.end(), b.end());
+//     }
+//   };
 
   private final int start;
   private final int duration;
@@ -73,6 +68,9 @@ public final class TimeRange {
    */
   public int end() {
     return start + duration;
+  }
+   public static TimeRange fromStartDuration(int start, int duration) {
+    return new TimeRange(start, duration);
   }
 
   /**
@@ -180,7 +178,5 @@ public final class TimeRange {
   /**
    * Create a {@code TimeRange} starting at {@code start} with a duration equal to {@code duration}.
    */
-  public static TimeRange fromStartDuration(int start, int duration) {
-    return new TimeRange(start, duration);
-  }
+ 
 }

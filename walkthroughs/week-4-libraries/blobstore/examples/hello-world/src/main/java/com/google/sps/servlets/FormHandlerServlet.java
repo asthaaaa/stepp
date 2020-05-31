@@ -56,6 +56,7 @@ public class FormHandlerServlet extends HttpServlet {
     out.println("<p>Here's the image you uploaded:</p>");
     out.println("<a href=\"" + imageUrl + "\">");
     out.println("<img src=\"" + imageUrl + "\" />");
+    out.println("<h4>"+imageUrl+"</h4>");
     out.println("</a>");
     out.println("<p>Here's the text you entered:</p>");
     out.println(message);

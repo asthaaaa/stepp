@@ -58,7 +58,7 @@ public class HomeServlet extends HttpServlet {
     out.println("<p>Upload an image:</p>");
     out.println("<input type=\"file\" name=\"image\">");
     out.println("<br/><br/>");
-
+   out.println("<h4>"+uploadUrl+"</h4>");
     out.println("<button>Submit</button>");
     out.println("</form>");
   }

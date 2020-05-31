@@ -55,7 +55,7 @@ function showImage()
     statsListElement.innerHTML = '';
    
 const label3 = document.createElement('label');
-   var i;
+   let i;
     for( i=0;i<l;i++){
 
   var x = document.createElement("IMG");
@@ -97,7 +97,7 @@ function fetchBlobstoreUrlAndShowForm() {
         const messageForm = document.getElementById('my-form');
         messageForm.action = imageUploadUrl;
         messageForm.classList.remove('hidden');
-      });//.then(()=>RandomProjects());
+      });
 }
 
 function createLink(URL, type){
@@ -130,14 +130,13 @@ function createListElement(text) {
 
 function deleteTask() {
   const params = new URLSearchParams();
-  //params.append('id', task.id);
+ 
     fetch('/delete-task', {method: 'POST', body: params}).then(() =>{location.reload(true).RandomProjects()});
-    //RandoProjects());
+    
     
 }
 function LOGIN() {
   const params = new URLSearchParams();
-  //params.append('id', task.id);
     fetch('/login', {method: 'POST', body: params}).then(() =>check());
 }
 function createform(){
@@ -186,7 +185,7 @@ function createNoform(){
   inputComment.id = "no";
   inputComment.name = "no";
   Formm.appendChild(inputComment);
-  //document.write("<br>");
+  
 
   const commentSubmit = document.createElement('input');
   commentSubmit.type = "submit";
@@ -214,7 +213,6 @@ const labell = document.createElement('label');
     buttonn.id="delete";
     buttonn.name="delete";
     buttonn.textContent="DELETE";
-   // buttonn.onclick="deleteTask()";
     buttonn.addEventListener("click",deleteTask);
     elem.appendChild(buttonn);
 }
