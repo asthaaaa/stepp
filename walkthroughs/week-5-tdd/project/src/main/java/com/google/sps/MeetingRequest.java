@@ -33,6 +33,7 @@ public final class MeetingRequest {
   public MeetingRequest(Collection<String> attendees, long duration) {
     this.duration = duration;
     this.attendees.addAll(attendees);
+    //this.optional_attendees=new HashSet<>();
   }
 
   /**
@@ -46,6 +47,9 @@ public final class MeetingRequest {
    * Returns a read-only copy of the people who are optional to attend this meeting.
    */
   public Collection<String> getOptionalAttendees() {
+      if(optional_attendees==null){
+          return new HashSet<>();
+      }
     return Collections.unmodifiableCollection(optional_attendees);
   }
 

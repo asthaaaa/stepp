@@ -12,8 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googl.sps.servlets;
-
+package com.google.sps.servlets;
+import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
@@ -40,7 +45,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/my-form-handler")
 public class FormHandlerServlet extends HttpServlet {
-
+private List<String> quotes =new ArrayList<>();;
+private int  i=0;
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -56,17 +62,29 @@ public class FormHandlerServlet extends HttpServlet {
     out.println("<p>Here's the image you uploaded:</p>");
     out.println("<a href=\"" + imageUrl + "\">");
     out.println("<img src=\"" + imageUrl + "\" />");
-    out.println("<h4>"+imageUrl+"</h4>");
     out.println("</a>");
     out.println("<p>Here's the text you entered:</p>");
     out.println(message);
+    String comment=imageUrl;//request.getParameter("commentBox");
+ long timestamp = System.currentTimeMillis();
+ quotes.add(comment);
+ Entity taskEntity = new Entity("taskss");
+    taskEntity.setProperty("title", comment);
+    taskEntity.setProperty("timestamp", timestamp);
+
+   
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
+
+  response.sendRedirect("/index.html");
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
   private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
-    List<BlobKey> blobKeys = blobs.get(formInputElementName);
+    List<BlobKey> blobKeys = blobs.get("image");
 
     // User submitted form without selecting a file, so we can't get a URL. (dev server)
     if (blobKeys == null || blobKeys.isEmpty()) {
@@ -90,7 +108,7 @@ public class FormHandlerServlet extends HttpServlet {
     ImagesService imagesService = ImagesServiceFactory.getImagesService();
     ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
 
-    // To support running in Google Cloud Shell with AppEngine's dev server, we must use the relative
+    // To support running in Google Cloud Shell with AppEngine's devserver, we must use the relative
     // path to the image, rather than the path returned by imagesService which contains a host.
     try {
       URL url = new URL(imagesService.getServingUrl(options));
